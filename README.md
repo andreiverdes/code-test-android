@@ -19,3 +19,9 @@ When you've finished, please include a short note with your response, explaining
 - What bugs did you find but not fix?
 - What would you change about the visual design of the app?
 - How long did you spend on this project(approximately)?
+
+## Instructions
+1. Clone this repo to a repo on your own Github account and **make it private**
+2. Invite user `intakebot` to collaborate on that repo
+3. Address each step of the problem above and commit as necessary
+4. Once you are finished, open a PR on your work (in your own repository) and assign `intakebot` as the reviewer and notify your Fueled contact via email.
