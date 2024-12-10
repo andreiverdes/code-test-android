@@ -1,46 +1,33 @@
 package com.fueled.technicalchallenge.presentation.character_list
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fueled.technicalchallenge.common.Resource
-import com.fueled.technicalchallenge.domain.repository.CharacterRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
+import com.fueled.technicalchallenge.data.ApiUtils
+import com.fueled.technicalchallenge.data.CharactersApi
+import com.fueled.technicalchallenge.data.model.CharacterApiModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
-@HiltViewModel
-class CharacterListViewModel @Inject constructor(
-    private val repository: CharacterRepository,
-) : ViewModel() {
+class CharacterListViewModel(private val api: CharactersApi) : ViewModel() {
 
-    private val _state = mutableStateOf(CharacterListState())
-    val state: State<CharacterListState> = _state
+    val state = MutableStateFlow(CharacterListState())
 
     init {
         getCharacters()
     }
 
     private fun getCharacters(query: String? = null) {
-        repository.getCharacters(query).onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _state.value =
-                        CharacterListState(characters = result.data?.items ?: emptyList())
-                }
-
-                is Resource.Error -> {
-                    _state.value = CharacterListState(
-                        error = result.message ?: "An unexpected error occured"
-                    )
-                }
-
-                is Resource.Loading -> {
-                    _state.value = CharacterListState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            val result = fetchCharacters()
+            state.value = CharacterListState(characters = result)
+        }
     }
+
+    private suspend fun fetchCharacters(nameQuery: String? = null): List<CharacterApiModel> =
+        api.getCharacters(
+            ts = ApiUtils.currentTimestamp,
+            hash = ApiUtils.hash,
+            heroNameQuery = nameQuery
+        ).results
+
 }
