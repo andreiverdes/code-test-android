@@ -1,4 +1,4 @@
-package com.fueled.technicalchallenge.presentation.character_list.components
+package com.fueled.technicalchallenge.presentation.character.list.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

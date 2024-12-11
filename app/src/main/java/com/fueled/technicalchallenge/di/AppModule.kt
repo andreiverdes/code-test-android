@@ -3,7 +3,7 @@ package com.fueled.technicalchallenge.di
 import com.fueled.technicalchallenge.data.ApiConstants
 import com.fueled.technicalchallenge.data.CharactersApi
 import com.fueled.technicalchallenge.data.UnWrapperFactory
-import com.fueled.technicalchallenge.presentation.character_list.CharacterListViewModel
+import com.fueled.technicalchallenge.presentation.character.list.CharacterListViewModel
 import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory

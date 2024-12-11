@@ -1,37 +1,65 @@
 package com.fueled.technicalchallenge.presentation.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = ColorPrimary,
-    background = DarkGray,
-    onBackground = TextWhite,
-    onPrimary = DarkGray
+    primary = Dark.Primary,
+    onPrimary = Dark.OnPrimary,
+    primaryContainer = Dark.PrimaryContainer,
+    onPrimaryContainer = Dark.OnPrimaryContainer,
+    secondary = Dark.Secondary,
+    onSecondary = Dark.OnSecondary,
+    secondaryContainer = Dark.SecondaryContainer,
+    onSecondaryContainer = Dark.OnSecondaryContainer,
+    tertiary = Dark.Tertiary,
+    onTertiary = Dark.OnTertiary,
+    tertiaryContainer = Dark.TertiaryContainer,
+    onTertiaryContainer = Dark.OnTertiaryContainer,
+    error = Dark.Error,
+    errorContainer = Dark.ErrorContainer,
+    onError = Dark.OnError,
+    onErrorContainer = Dark.OnErrorContainer,
+    background = Dark.Background,
+    onBackground = Dark.OnBackground,
+    surface = Dark.Surface,
+    onSurface = Dark.OnSurface,
+    surfaceVariant = Dark.SurfaceVariant,
+    onSurfaceVariant = Dark.OnSurfaceVariant,
+    outline = Dark.Outline,
+    outlineVariant = Dark.OutlineVariant,
+    inverseOnSurface = Dark.InverseOnSurface,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = ColorPrimary,
-    background = Color.White,
-    onBackground = MediumGray,
-    onPrimary = DarkGray
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = Light.Primary,
+    onPrimary = Light.OnPrimary,
+    primaryContainer = Light.PrimaryContainer,
+    onPrimaryContainer = Light.OnPrimaryContainer,
+    secondary = Light.Secondary,
+    onSecondary = Light.OnSecondary,
+    secondaryContainer = Light.SecondaryContainer,
+    onSecondaryContainer = Light.OnSecondaryContainer,
+    tertiary = Light.Tertiary,
+    onTertiary = Light.OnTertiary,
+    tertiaryContainer = Light.TertiaryContainer,
+    onTertiaryContainer = Light.OnTertiaryContainer,
+    error = Light.Error,
+    errorContainer = Light.ErrorContainer,
+    onError = Light.OnError,
+    onErrorContainer = Light.OnErrorContainer,
+    background = Light.Background,
+    onBackground = Light.OnBackground,
+    surface = Light.Surface,
+    onSurface = Light.OnSurface,
+    surfaceVariant = Light.SurfaceVariant,
+    onSurfaceVariant = Light.OnSurfaceVariant,
+    outline = Light.Outline,
+    outlineVariant = Light.OutlineVariant,
+    inverseOnSurface = Light.InverseOnSurface,
 )
 
 @Composable
@@ -42,18 +70,13 @@ fun TechnicalChallengeTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = TechnicalChallengeTypography,
         shapes = Shapes,
         content = content
     )

@@ -1,4 +1,4 @@
-package com.fueled.technicalchallenge.presentation.character_list
+package com.fueled.technicalchallenge.presentation.character.list
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.fueled.technicalchallenge.di.AppModule
-import com.fueled.technicalchallenge.presentation.character_list.components.CharacterCard
+import com.fueled.technicalchallenge.presentation.character.list.components.CharacterCard
 
 @Composable
 internal fun CharacterListScreen(

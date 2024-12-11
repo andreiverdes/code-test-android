@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Code Test</string>
+
+    <string name="welcome_title">Welcome to\nMarvel Heroes</string>
+    <string name="welcome_subtitle">The best Marvel Heroes Glossary there is!</string>
+    <string name="welcome_button">Get Started</string>
+
 </resources>

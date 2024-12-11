@@ -3,6 +3,7 @@ package com.fueled.technicalchallenge.presentation.character_list
 import com.fueled.technicalchallenge.data.CharactersApi
 import com.fueled.technicalchallenge.data.model.CharacterApiModel
 import com.fueled.technicalchallenge.data.model.PageApiModel
+import com.fueled.technicalchallenge.presentation.character.list.CharacterListViewModel
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

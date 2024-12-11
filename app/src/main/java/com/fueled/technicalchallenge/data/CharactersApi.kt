@@ -18,4 +18,5 @@ interface CharactersApi {
         @Query("nameStartsWith") heroNameQuery: String?,
     ): PageApiModel<CharacterApiModel>
 
+
 }

@@ -1,4 +1,4 @@
-package com.fueled.technicalchallenge.presentation.character_list
+package com.fueled.technicalchallenge.presentation.character.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
