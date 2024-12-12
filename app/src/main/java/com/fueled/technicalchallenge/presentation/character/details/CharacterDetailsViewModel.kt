@@ -22,7 +22,7 @@ class CharacterDetailsViewModel(
     fun getCharacterDetails(characterId: Int) {
         viewModelScope.launch {
             state.value = CharacterDetailsState(isLoading = true)
-            characterRepository.getCharacter(characterId)
+            characterRepository. getCharacter(characterId)
                 .fold(
                     onSuccess = {
                         state.value = CharacterDetailsState(character = it)

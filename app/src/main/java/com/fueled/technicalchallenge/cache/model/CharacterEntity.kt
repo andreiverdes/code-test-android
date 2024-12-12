@@ -23,7 +23,8 @@ data class CharacterEntity(
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         suspend fun insertAll(characters: List<CharacterEntity>)
 
-        @Query("SELECT * FROM characterentity")
+        @Query("SELECT * FROM characterentity ORDER BY name" +
+                "")
         fun pagingSource(): PagingSource<Int, CharacterEntity>
 
         @Query("SELECT * FROM characterentity WHERE id LIKE :characterId")

@@ -17,6 +17,7 @@ interface CharactersApi {
         @Query("hash") hash: String,
         @Query("apikey") apiKey: String = PUBLIC_KEY,
         @Query("nameStartsWith") heroNameQuery: String?,
+        @Query("orderBy") orderBy: String = "name",
         @Query("limit") limit: Int,
         @Query("offset") offset: Int,
     ): PageApiModel<CharacterApiModel>

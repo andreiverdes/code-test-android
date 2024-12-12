@@ -6,13 +6,12 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.fueled.technicalchallenge.cache.model.CharacterEntity
+import com.fueled.technicalchallenge.cache.model.RemoteKey
 import com.fueled.technicalchallenge.data.ApiUtils
 import com.fueled.technicalchallenge.data.CharactersApi
 import com.fueled.technicalchallenge.data.model.CharacterApiModel
-import retrofit2.HttpException
-import java.io.IOException
 
-private val CharacterApiModel.asEntityCharacter: CharacterEntity
+private val CharacterApiModel.asEntityModel: CharacterEntity
     get() = CharacterEntity(
         id = this.id.toInt(),
         name = this.name,
@@ -29,6 +28,8 @@ class CharacterRemoteMediator(
 ) : RemoteMediator<Int, CharacterEntity>() {
     private val characterDao = database.characterDao()
 
+    private var nextPageOffset = 0
+
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
@@ -38,64 +39,50 @@ class CharacterRemoteMediator(
         state: PagingState<Int, CharacterEntity>
     ): MediatorResult {
         return try {
+            // Determine the offset
             val offset = when (loadType) {
-                LoadType.REFRESH -> null
-                // In this example, you never need to prepend, since REFRESH
-                // will always load the first page in the list. Immediately
-                // return, reporting end of pagination.
-                LoadType.PREPEND ->
-                    return MediatorResult.Success(endOfPaginationReached = true)
-
+                LoadType.REFRESH -> 0
+                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND -> {
-                    val lastItem = state.lastItemOrNull()
-                        ?: return MediatorResult.Success(
-                            endOfPaginationReached = true
-                        )
-
-                    // You must explicitly check if the last item is null when
-                    // appending, since passing null to networkService is only
-                    // valid for initial load. If lastItem is null it means no
-                    // items were loaded after the initial REFRESH and there are
-                    // no more items to load.
-
-                    val totalItemsLoaded = state.pages.sumOf { it.data.size }
-                    totalItemsLoaded
+                    val remoteKeys = getLastRemoteKey(state)
+                        ?: return MediatorResult.Success(endOfPaginationReached = false)
+                    remoteKeys.nextKey
+                        ?: return MediatorResult.Success(endOfPaginationReached = true)
                 }
             }
 
-            // Suspending network load via Retrofit. This doesn't need to be
-            // wrapped in a withContext(Dispatcher.IO) { ... } block since
-            // Retrofit's Coroutine CallAdapter dispatches on a worker
-            // thread.
+            // API call
             val response = api.getCharacters(
-                limit = 50,
-                offset = offset ?: 0,
                 ts = ApiUtils.currentTimestamp,
                 hash = ApiUtils.hash,
                 heroNameQuery = null,
+                limit = state.config.pageSize,
+                offset = offset,
             )
 
+            // Save response data and next key into the database
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    characterDao.clearAll()
+                    database.remoteKeyDao().clearRemoteKeys()
+                    database.characterDao().clearAll()
                 }
 
-                // Insert new users into database, which invalidates the
-                // current PagingData, allowing Paging to present the updates
-                // in the DB.
-                characterDao.insertAll(response.results.map {
-                    it.asEntityCharacter
-                })
+                val nextKey = if (response.results.isEmpty()) null else offset + state.config.pageSize
+                val keys = response.results.map {
+                    RemoteKey(characterId = it.id.toInt(), nextKey = nextKey)
+                }
+                database.remoteKeyDao().insertAll(keys)
+                database.characterDao().insertAll(response.results.map { it.asEntityModel })
             }
 
-            MediatorResult.Success(
-                endOfPaginationReached = response.offset + response.count >= response.total
-            )
-        } catch (e: IOException) {
-            MediatorResult.Error(e)
-        } catch (e: HttpException) {
+            MediatorResult.Success(endOfPaginationReached = response.results.isEmpty())
+        } catch (e: Exception) {
             MediatorResult.Error(e)
         }
     }
-
+    private suspend fun getLastRemoteKey(state: PagingState<Int, CharacterEntity>): RemoteKey? {
+        return state.lastItemOrNull()?.let { character ->
+            database.remoteKeyDao().remoteKeysByCharacterId(character.id)
+        }
+    }
 }

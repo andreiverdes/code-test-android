@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridItemScope
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,9 +39,7 @@ internal fun CharacterListScreen(
 ) {
     val characters = viewModel.getCharacters().collectAsLazyPagingItems()
 
-    val gridState = rememberSaveable(saver =  LazyGridState.Saver) {
-        LazyGridState(0, 0)
-    }
+    val gridState = rememberLazyGridState( )
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -67,32 +69,33 @@ internal fun CharacterListScreen(
                     }
                 }
                 when (characters.loadState.refresh) {
-                    is LoadState.Error -> {
-                        item {
-                            Text(
-                                text = "Failed to load Heroes :'(",
-                                style = MaterialTheme.typography.headlineLarge,
-                            )
-                        }
+                    is LoadState.Error -> maxLineSpanItem {
+                        Text(
+                            text = "Failed to load Heroes :'(",
+                            style = MaterialTheme.typography.headlineLarge,
+                        )
                     }
-                    LoadState.Loading -> {
-                        item {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(48.dp)
-                                )
-                            }
+                    LoadState.Loading -> maxLineSpanItem {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(48.dp)
+                            )
                         }
                     }
                     is LoadState.NotLoading -> {}
                 }
 
                 when (characters.loadState.append) {
-                    is LoadState.Error -> {}
-                    LoadState.Loading ->item {
+                    is LoadState.Error -> maxLineSpanItem {
+                        Text(
+                            text = "Failed to load Heroes :'(",
+                            style = MaterialTheme.typography.headlineLarge,
+                        )
+                    }
+                    LoadState.Loading -> maxLineSpanItem {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center,
@@ -108,4 +111,8 @@ internal fun CharacterListScreen(
         }
     }
 }
+
+fun LazyGridScope.maxLineSpanItem(
+    content: @Composable LazyGridItemScope.() -> Unit
+) = item(span = { GridItemSpan(this.maxLineSpan) }, content = content)
 

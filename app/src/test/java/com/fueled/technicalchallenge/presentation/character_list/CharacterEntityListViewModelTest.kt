@@ -3,6 +3,7 @@ package com.fueled.technicalchallenge.presentation.character_list
 import com.fueled.technicalchallenge.data.CharactersApi
 import com.fueled.technicalchallenge.data.model.CharacterApiModel
 import com.fueled.technicalchallenge.data.model.PageApiModel
+import com.fueled.technicalchallenge.data.repository.CharacterRepository
 import com.fueled.technicalchallenge.presentation.character.list.CharacterListViewModel
 import io.mockk.coEvery
 import io.mockk.every
@@ -22,7 +23,8 @@ import org.junit.Test
 class CharacterEntityListViewModelTest {
     private val testDispatcher = UnconfinedTestDispatcher()
     private val charactersApi = mockk<CharactersApi>()
-    private val viewModel get() = CharacterListViewModel(charactersApi)
+    private val characterRepository = mockk<CharacterRepository>()
+    private val viewModel get() = CharacterListViewModel(characterRepository)
 
     @Before
     fun before() {
