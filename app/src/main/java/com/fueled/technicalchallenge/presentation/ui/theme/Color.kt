@@ -73,10 +73,10 @@ object Dark {
     val OnErrorContainer = Color(0x14E21221)
 
     val Background = Color(0xFF1F222A)
-    val OnBackground = Color(0xFFFFFFF)
+    val OnBackground = Color(0xFFFFFFFF)
 
-    val Surface = Color(0xFFFFFFFF)
-    val OnSurface = Color(0xFF212121)
+    val Surface = Color(0xFF1F222A)
+    val OnSurface = Color(0xFFFFFFFF)
 
     val SurfaceVariant = Color(0xFF1F222A)
     val OnSurfaceVariant = Color(0xFFFFFFFF)

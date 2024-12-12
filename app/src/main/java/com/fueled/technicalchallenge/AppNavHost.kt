@@ -3,10 +3,13 @@ package com.fueled.technicalchallenge
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.fueled.technicalchallenge.presentation.Screen
+import com.fueled.technicalchallenge.presentation.character.details.CharacterDetailsScreen
 import com.fueled.technicalchallenge.presentation.character.list.CharacterListScreen
 import com.fueled.technicalchallenge.presentation.welcome.WelcomeScreen
 
@@ -19,26 +22,38 @@ fun AppNavHost(
         startDestination = Screen.WelcomeScreen.route,
     ) {
         addWelcomeScreen(navController)
-        addChatacterListScreen(navController)
+        addCharacterListScreen(navController)
         addCharacterDetailsScreen(navController)
     }
 }
 
 private fun NavGraphBuilder.addCharacterDetailsScreen(navController: NavHostController) {
     composable(
-        route = Screen.CharacterDetailsScreen.route
-    ) {
-        WelcomeScreen {
-            navController.navigate(Screen.CharacterListScreen.route)
+        route = Screen.CharacterDetailsScreen.route,
+        arguments = listOf(
+            navArgument(
+                name = Screen.CharacterDetailsScreen.Args.CHARACTER_ID
+            ) {
+                type = NavType.LongType
+            }
+        )
+    ) { backStackEntry ->
+        val characterId = backStackEntry.arguments
+            ?.getLong(Screen.CharacterDetailsScreen.Args.CHARACTER_ID)
+            ?: -1L
+        CharacterDetailsScreen(characterId = characterId) {
+            navController.navigateUp()
         }
     }
 }
 
-private fun NavGraphBuilder.addChatacterListScreen(navController: NavHostController) {
+private fun NavGraphBuilder.addCharacterListScreen(navController: NavHostController) {
     composable(
         route = Screen.CharacterListScreen.route
     ) {
-        CharacterListScreen()
+        CharacterListScreen {
+            navController.navigate(Screen.CharacterDetailsScreen.makeRoute(it.id))
+        }
     }
 }
 

@@ -89,7 +89,7 @@ fun WelcomeScreen(
             Text(
                 text = stringResource(R.string.welcome_title),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = TechnicalChallengeTypography.displayMedium,
+                style = MaterialTheme.typography.displayMedium,
                 textAlign = TextAlign.Center
             )
             Spacer(Modifier.size(16.dp))
@@ -97,7 +97,7 @@ fun WelcomeScreen(
                 text = stringResource(R.string.welcome_subtitle),
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = TechnicalChallengeTypography.headlineMedium,
+                style = MaterialTheme.typography.headlineMedium,
             )
             Spacer(Modifier.size(16.dp))
             Button(modifier = Modifier

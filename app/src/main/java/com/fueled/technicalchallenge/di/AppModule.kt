@@ -13,12 +13,12 @@ object AppModule {
         .build()
     private val moshiConverterFactory = MoshiConverterFactory.create(moshi)
 
-    private val charactersApi = Retrofit.Builder()
-        .baseUrl(ApiConstants.BASE_URL)
-        .addConverterFactory(UnWrapperFactory)
-        .addConverterFactory(moshiConverterFactory)
-        .build()
-        .create(CharactersApi::class.java)
-
-    val characterListViewModel = CharacterListViewModel(charactersApi)
+    val charactersApi by lazy {
+        Retrofit.Builder()
+            .baseUrl(ApiConstants.BASE_URL)
+            .addConverterFactory(UnWrapperFactory)
+            .addConverterFactory(moshiConverterFactory)
+            .build()
+            .create(CharactersApi::class.java)
+    }
 }

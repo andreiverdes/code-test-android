@@ -4,5 +4,6 @@
     <string name="welcome_title">Welcome to\nMarvel Heroes</string>
     <string name="welcome_subtitle">The best Marvel Heroes Glossary there is!</string>
     <string name="welcome_button">Get Started</string>
+    <string name="character_details_label_description">Description</string>
 
 </resources>
