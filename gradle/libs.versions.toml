@@ -26,6 +26,9 @@ moshi = "1.15.1"
 mockk = "1.13.13"
 coroutines = "1.9.0"
 
+ksp = "2.0.21-1.0.27"
+room = "2.6.1"
+paging = "3.3.5"
 
 [libraries]
 #// Android Ktx
@@ -41,6 +44,17 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 
 #// Jetpack Compose activity
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+
+#//Paging
+androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
+
+#//Room
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+
 #// Jetpack Compose
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }

@@ -17,11 +17,13 @@ interface CharactersApi {
         @Query("hash") hash: String,
         @Query("apikey") apiKey: String = PUBLIC_KEY,
         @Query("nameStartsWith") heroNameQuery: String?,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int,
     ): PageApiModel<CharacterApiModel>
 
     @GET("characters/{characterId}")
     suspend fun getCharacterDetails(
-        @Path("characterId") characterId: Long,
+        @Path("characterId") characterId: Int,
         @Query("ts") ts: String,
         @Query("hash") hash: String,
         @Query("apikey") apiKey: String = PUBLIC_KEY,

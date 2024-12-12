@@ -48,7 +48,7 @@ internal fun CharacterCard(
         ) {
             Image(
                 modifier = Modifier.fillMaxSize(),
-                painter = rememberAsyncImagePainter(data.fullImageUrl),
+                painter = rememberAsyncImagePainter(data.defaultImageUrl),
                 contentDescription = "Character Image",
                 alignment = Alignment.Center,
                 contentScale = ContentScale.Crop,

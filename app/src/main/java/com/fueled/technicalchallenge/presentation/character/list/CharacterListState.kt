@@ -1,6 +1,5 @@
 package com.fueled.technicalchallenge.presentation.character.list
 
-import com.fueled.technicalchallenge.data.model.CharacterApiModel
 import com.fueled.technicalchallenge.domain.model.Character
 
 data class CharacterListState(

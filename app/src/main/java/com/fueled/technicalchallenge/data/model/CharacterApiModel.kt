@@ -18,6 +18,9 @@ data class CharacterApiModel(
 ){
     val defaultImageUrl = "${thumbnail.path}/${ImageVariant.PORTRAIT_INCREDIBLE.pathValue}.${thumbnail.extension}"
         .formatUrl()
+
+    val fullImageUrl = "${thumbnail.path}${ImageVariant.FULL_SIZE.pathValue}.${thumbnail.extension}"
+        .formatUrl()
 }
 
 private fun String.formatUrl(): String {

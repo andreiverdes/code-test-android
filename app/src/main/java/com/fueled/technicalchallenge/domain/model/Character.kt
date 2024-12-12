@@ -1,44 +1,19 @@
 package com.fueled.technicalchallenge.domain.model
 
 data class Character(
-    val id: Long,
+    val id: Int,
     val name: String,
     val description: String,
-    val thumbnail: Image,
-    val resourceURI: String,
-    val events: ResourceItems,
-    val urls: List<Url>,
+    val fullImageUrl: String,
+    val defaultImageUrl: String,
 ) {
-    val defaultImageUrl =
-        "${thumbnail.path}/${ImageVariant.PORTRAIT_INCREDIBLE.pathValue}.${thumbnail.extension}"
-            .formatUrl()
-
-    val fullImageUrl =
-        "${thumbnail.path}${ImageVariant.FULL_SIZE.pathValue}.${thumbnail.extension}"
-            .formatUrl()
-
     companion object {
         val NULL = Character(
-            id = -1L,
+            id = -1,
             name = "",
             description = "",
-            thumbnail = Image("", ""),
-            resourceURI = "",
-            events = ResourceItems(
-                available = -1,
-                returned = -1,
-                collectionURI = "",
-                items = listOf(),
-            ),
-            urls = listOf(),
+            fullImageUrl = "",
+            defaultImageUrl = "",
         )
-    }
-}
-
-private fun String.formatUrl(): String {
-    return when {
-        startsWith("https") -> this
-        startsWith("http") -> replace("http", "https")
-        else -> "https://$this"
     }
 }

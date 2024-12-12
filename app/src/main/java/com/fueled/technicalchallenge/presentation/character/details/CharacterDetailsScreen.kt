@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.fueled.technicalchallenge.R
-import com.fueled.technicalchallenge.presentation.ui.theme.TechnicalChallengeTypography
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +40,7 @@ fun CharacterDetailsScreen(
     viewModel: CharacterDetailsViewModel = viewModel(
         factory = CharacterDetailsViewModel.Factory
     ),
-    characterId: Long,
+    characterId: Int,
     onBackClicked: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()

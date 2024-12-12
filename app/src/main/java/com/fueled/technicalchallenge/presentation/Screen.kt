@@ -1,8 +1,5 @@
 package com.fueled.technicalchallenge.presentation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-
 sealed class Screen(val route: String) {
     data object WelcomeScreen: Screen("welcome_screen")
     data object CharacterListScreen: Screen("character_list_screen")
@@ -16,7 +13,7 @@ sealed class Screen(val route: String) {
         }
 
         fun makeRoute(
-            characterId: Long,
+            characterId: Int,
         ) = route.arg(Args.CHARACTER_ID, characterId.toString())
     }
 

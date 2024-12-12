@@ -3,7 +3,6 @@ package com.fueled.technicalchallenge.di
 import com.fueled.technicalchallenge.data.ApiConstants
 import com.fueled.technicalchallenge.data.CharactersApi
 import com.fueled.technicalchallenge.data.UnWrapperFactory
-import com.fueled.technicalchallenge.presentation.character.list.CharacterListViewModel
 import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -13,7 +12,7 @@ object AppModule {
         .build()
     private val moshiConverterFactory = MoshiConverterFactory.create(moshi)
 
-    val charactersApi by lazy {
+    val charactersApi: CharactersApi by lazy {
         Retrofit.Builder()
             .baseUrl(ApiConstants.BASE_URL)
             .addConverterFactory(UnWrapperFactory)
@@ -21,4 +20,5 @@ object AppModule {
             .build()
             .create(CharactersApi::class.java)
     }
+
 }

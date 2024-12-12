@@ -1,12 +1,15 @@
 package com.fueled.technicalchallenge
 
 import android.app.Application
+import androidx.room.Room
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import coil.util.DebugLogger
+import com.fueled.technicalchallenge.cache.CharactersDatabase
 import com.fueled.technicalchallenge.data.CharactersApi
+import com.fueled.technicalchallenge.data.repository.CharacterRepository
 import com.fueled.technicalchallenge.di.AppModule
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
@@ -14,6 +17,22 @@ import okhttp3.OkHttpClient
 class ChallengeApplication: Application(), ImageLoaderFactory {
 
     val api: CharactersApi = AppModule.charactersApi
+
+    lateinit var db: CharactersDatabase
+        private set
+
+    lateinit var characterRepository: CharacterRepository
+        private set
+
+    override fun onCreate() {
+        super.onCreate()
+        db = Room.databaseBuilder(
+            applicationContext,
+            CharactersDatabase::class.java, "characters-database"
+        ).build()
+
+        characterRepository = CharacterRepository(db, api)
+    }
 
     override fun newImageLoader(): ImageLoader {
         return ImageLoader.Builder(this)

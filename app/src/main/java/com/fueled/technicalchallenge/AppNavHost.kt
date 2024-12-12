@@ -34,13 +34,13 @@ private fun NavGraphBuilder.addCharacterDetailsScreen(navController: NavHostCont
             navArgument(
                 name = Screen.CharacterDetailsScreen.Args.CHARACTER_ID
             ) {
-                type = NavType.LongType
+                type = NavType.IntType
             }
         )
     ) { backStackEntry ->
         val characterId = backStackEntry.arguments
-            ?.getLong(Screen.CharacterDetailsScreen.Args.CHARACTER_ID)
-            ?: -1L
+            ?.getInt(Screen.CharacterDetailsScreen.Args.CHARACTER_ID)
+            ?: -1
         CharacterDetailsScreen(characterId = characterId) {
             navController.navigateUp()
         }

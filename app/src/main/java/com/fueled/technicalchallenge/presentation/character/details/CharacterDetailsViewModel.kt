@@ -6,43 +6,39 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.fueled.technicalchallenge.ChallengeApplication
-import com.fueled.technicalchallenge.data.ApiUtils
-import com.fueled.technicalchallenge.data.CharactersApi
-import com.fueled.technicalchallenge.domain.model.Character
-import com.fueled.technicalchallenge.presentation.character.list.asDomainCharacter
+import com.fueled.technicalchallenge.data.repository.CharacterRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class CharacterDetailsViewModel(private val api: CharactersApi) : ViewModel() {
+class CharacterDetailsViewModel(
+    private val characterRepository: CharacterRepository,
+) : ViewModel() {
 
     val state = MutableStateFlow(CharacterDetailsState(
         isLoading = true,
     ))
 
 
-    fun getCharacterDetails(characterId: Long) {
+    fun getCharacterDetails(characterId: Int) {
         viewModelScope.launch {
-            val result = fetchCharacterDetails(characterId)
-            state.value = CharacterDetailsState(character = result)
+            state.value = CharacterDetailsState(isLoading = true)
+            characterRepository.getCharacter(characterId)
+                .fold(
+                    onSuccess = {
+                        state.value = CharacterDetailsState(character = it)
+                    },
+                    onFailure = {
+                        state.value = CharacterDetailsState(error = it.message ?: "")
+                    }
+                )
         }
     }
-
-    private suspend fun fetchCharacterDetails(characterId: Long): Character =
-        api.getCharacterDetails(
-            ts = ApiUtils.currentTimestamp,
-            hash = ApiUtils.hash,
-            heroNameQuery = null,
-            characterId = characterId,
-        ).results.map {
-            it.asDomainCharacter
-        }.firstOrNull() ?: Character.NULL
 
     companion object {
         val Factory = viewModelFactory {
             initializer {
                 val application = this[APPLICATION_KEY] as ChallengeApplication
-                val api = application.api
-                CharacterDetailsViewModel(api)
+                CharacterDetailsViewModel(characterRepository = application.characterRepository)
             }
         }
     }

@@ -19,7 +19,7 @@ import org.junit.Test
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class CharacterListViewModelTest {
+class CharacterEntityListViewModelTest {
     private val testDispatcher = UnconfinedTestDispatcher()
     private val charactersApi = mockk<CharactersApi>()
     private val viewModel get() = CharacterListViewModel(charactersApi)
