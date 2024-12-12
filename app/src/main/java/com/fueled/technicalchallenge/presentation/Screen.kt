@@ -1,5 +1,22 @@
 package com.fueled.technicalchallenge.presentation
 
 sealed class Screen(val route: String) {
-    object CharacterListScreen: Screen("character_list_screen")
+    data object WelcomeScreen: Screen("welcome_screen")
+    data object CharacterListScreen: Screen("character_list_screen")
+    data object CharacterDetailsScreen: Screen(
+        "character_details_screen/"+
+                "?${Args.CHARACTER_ID}={${Args.CHARACTER_ID}}"
+    ) {
+
+        object Args {
+            const val CHARACTER_ID = "CHARACTER_ID"
+        }
+
+        fun makeRoute(
+            characterId: Int,
+        ) = route.arg(Args.CHARACTER_ID, characterId.toString())
+    }
+
+    fun String.arg(arg: String, value: String?) =
+        value?.let { this.replace("{${arg}}", it) } ?: this
 }
